@@ -1,5 +1,5 @@
-import WasteExchangePage from "@/components/waste-exchange-page"
+import PenukaranSampah from "@/components/penukaran-sampah"
 
 export default function PenukaranSampahPage() {
-  return <WasteExchangePage />
+  return <PenukaranSampah />
 }
