@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import { Eye, EyeOff, Package2, Mail, Lock, User, Phone } from "lucide-react"
+import { Eye, EyeOff, RecycleIcon, Mail, Lock, User, Phone } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -45,8 +45,8 @@ export default function AuthPage() {
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center mb-8">
           <Link href="/" className="flex items-center gap-2 font-semibold text-2xl">
-            <Package2 className="h-8 w-8 text-green-600" />
-            <span className="text-gray-900">EcoTrack</span>
+            <RecycleIcon className="h-8 w-8 text-green-600" />
+            <span className="text-gray-900">SampahKu.id</span>
           </Link>
         </div>
 
@@ -215,19 +215,7 @@ export default function AuthPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="terms" required />
-                    <Label htmlFor="terms" className="text-sm">
-                      Saya setuju dengan{" "}
-                      <Link href="#" className="text-green-600 hover:underline">
-                        Syarat & Ketentuan
-                      </Link>{" "}
-                      dan{" "}
-                      <Link href="#" className="text-green-600 hover:underline">
-                        Kebijakan Privasi
-                      </Link>
-                    </Label>
-                  </div>
+                  
 
                   <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={isLoading}>
                     {isLoading ? "Memproses..." : "Daftar"}
