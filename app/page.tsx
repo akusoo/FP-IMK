@@ -1,9 +1,5 @@
-import WasteManagementDashboard from "@/components/waste-management-dashboard"
+import Dashboard from "@/components/dashboard"
 
-export default function HomePage() {
-  return (
-    <div className="bg-background">
-      <WasteManagementDashboard />
-    </div>
-  )
+export default function Page() {
+  return <Dashboard />
 }
