@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Gift, Star, ShoppingCart, Crown, Trophy, Filter, Search } from "lucide-react"
+import { Gift, Star, ShoppingCart, Crown, Trophy, Filter, Search, Eye, EyeOff } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -25,12 +25,11 @@ export default function RewardsPage() {
   const { user } = useUser()
   const [selectedReward, setSelectedReward] = useState<any>(null)
   const [isRedeemDialogOpen, setIsRedeemDialogOpen] = useState(false)
+  const [showVoucherCode, setShowVoucherCode] = useState<{ [id: string]: boolean }>({})
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
 
   const userStats = {
     currentPoints: 2450,
-    level: "Gold",
-    nextLevel: "Platinum",
-    pointsToNextLevel: 550,
     totalEarned: 15680,
     totalRedeemed: 13230,
   }
@@ -122,6 +121,31 @@ export default function RewardsPage() {
     },
   ]
 
+  // Dummy data untuk voucher yang dimiliki user
+  const ownedVouchers = [
+    {
+      id: 'VCR-001',
+      name: 'Voucher Belanja Rp 50.000',
+      code: 'SHOP50-ABCD1234',
+      status: 'Aktif',
+      expired: '31 Des 2024',
+    },
+    {
+      id: 'VCR-002',
+      name: 'Voucher Grab Rp 30.000',
+      code: 'GRAB30-XYZ9876',
+      status: 'Aktif',
+      expired: '15 Jan 2025',
+    },
+    {
+      id: 'VCR-003',
+      name: 'Voucher Belanja Rp 50.000',
+      code: 'SHOP50-QWER5678',
+      status: 'Sudah Digunakan',
+      expired: '10 Jun 2024',
+    },
+  ]
+
   const handleRedeem = (reward: any) => {
     setSelectedReward(reward)
     setIsRedeemDialogOpen(true)
@@ -133,7 +157,9 @@ export default function RewardsPage() {
     setSelectedReward(null)
   }
 
-  const levelProgress = (userStats.pointsToNextLevel / 1000) * 100
+  const filteredRewards = selectedCategory === 'all'
+    ? rewards
+    : rewards.filter((reward) => reward.category === selectedCategory)
 
   return (
     <AppLayout currentUser={user}>
@@ -144,30 +170,12 @@ export default function RewardsPage() {
         </div>
       </div>
 
-      {/* User Stats Card */}
+      {/* User Points Card (tanpa membership) */}
       <Card className="bg-gradient-to-r from-green-500 to-blue-600 text-white mb-8">
         <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Crown className="h-6 w-6" />
-                <Badge variant="secondary" className="bg-white/20 text-white">
-                  Level {userStats.level}
-                </Badge>
-              </div>
-              <h2 className="text-3xl font-bold">{userStats.currentPoints.toLocaleString()} Poin</h2>
-              <p className="text-white/80">Poin tersedia</p>
-            </div>
-            <div className="text-right">
-              <div className="flex items-center gap-2 mb-2">
-                <Star className="h-5 w-5" />
-                <span className="text-sm">Menuju {userStats.nextLevel}</span>
-              </div>
-              <div className="w-32">
-                <Progress value={levelProgress} className="h-2 bg-white/20" />
-                <p className="text-xs text-white/80 mt-1">{userStats.pointsToNextLevel} poin lagi</p>
-              </div>
-            </div>
+          <div>
+            <h2 className="text-3xl font-bold">{userStats.currentPoints.toLocaleString()} Poin</h2>
+            <p className="text-white/80">Poin tersedia</p>
           </div>
         </CardContent>
       </Card>
@@ -177,6 +185,7 @@ export default function RewardsPage() {
           <TabsList>
             <TabsTrigger value="catalog">Katalog Hadiah</TabsTrigger>
             <TabsTrigger value="history">Riwayat Penukaran</TabsTrigger>
+            <TabsTrigger value="owned-vouchers">Voucher yang Dimiliki</TabsTrigger>
           </TabsList>
 
           <div className="flex gap-2">
@@ -189,7 +198,7 @@ export default function RewardsPage() {
               />
             </div>
 
-            <Select>
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-[180px] h-10">
                 <SelectValue placeholder="Kategori" />
               </SelectTrigger>
@@ -200,17 +209,12 @@ export default function RewardsPage() {
                 <SelectItem value="digital">Digital</SelectItem>
               </SelectContent>
             </Select>
-
-            <Button variant="outline" size="sm" className="h-10">
-              <Filter className="mr-2 h-4 w-4" />
-              Filter
-            </Button>
           </div>
         </div>
 
         <TabsContent value="catalog" className="mt-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {rewards.map((reward) => (
+            {filteredRewards.map((reward) => (
               <Card key={reward.id} className="relative overflow-hidden">
                 {reward.popular && (
                   <Badge className="absolute top-2 left-2 z-10 bg-orange-500 hover:bg-orange-600">
@@ -284,44 +288,51 @@ export default function RewardsPage() {
             </CardContent>
           </Card>
         </TabsContent>
-      </Tabs>
 
-      {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3 mt-8">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-yellow-600" />
-              <div>
-                <p className="text-sm text-muted-foreground">Total Poin Diperoleh</p>
-                <p className="text-xl font-bold">{userStats.totalEarned.toLocaleString()}</p>
+        <TabsContent value="owned-vouchers" className="mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Voucher yang Dimiliki</CardTitle>
+              <CardDescription>Daftar voucher aktif dan riwayat voucher Anda</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {ownedVouchers.length === 0 ? (
+                  <p className="text-center text-muted-foreground">Belum ada voucher yang dimiliki.</p>
+                ) : (
+                  ownedVouchers.map((voucher) => (
+                    <div key={voucher.id} className="flex items-center justify-between p-4 border rounded-lg bg-muted">
+                      <div>
+                        <p className="font-medium">{voucher.name}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm text-muted-foreground mb-0">Kode: </p>
+                          {showVoucherCode[voucher.id] ? (
+                            <span className="font-mono font-bold text-green-700">{voucher.code}</span>
+                          ) : (
+                            <span className="font-mono font-bold text-green-700">••••••••••••</span>
+                          )}
+                          <button
+                            type="button"
+                            aria-label={showVoucherCode[voucher.id] ? 'Sembunyikan kode' : 'Tampilkan kode'}
+                            onClick={() => setShowVoucherCode((prev) => ({ ...prev, [voucher.id]: !prev[voucher.id] }))}
+                            className="ml-1 p-1 rounded hover:bg-green-100"
+                          >
+                            {showVoucherCode[voucher.id] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                          </button>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Kadaluarsa: {voucher.expired}</p>
+                      </div>
+                      <Badge variant={voucher.status === 'Aktif' ? 'default' : 'secondary'} className="text-xs">
+                        {voucher.status}
+                      </Badge>
+                    </div>
+                  ))
+                )}
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Gift className="h-5 w-5 text-green-600" />
-              <div>
-                <p className="text-sm text-muted-foreground">Total Poin Ditukar</p>
-                <p className="text-xl font-bold">{userStats.totalRedeemed.toLocaleString()}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Star className="h-5 w-5 text-blue-600" />
-              <div>
-                <p className="text-sm text-muted-foreground">Hadiah Ditukar</p>
-                <p className="text-xl font-bold">{redeemHistory.length}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
 
       {/* Redeem Confirmation Dialog */}
       <Dialog open={isRedeemDialogOpen} onOpenChange={setIsRedeemDialogOpen}>

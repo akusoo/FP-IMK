@@ -105,18 +105,6 @@ export default function AuthPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox id="remember" />
-                      <Label htmlFor="remember" className="text-sm">
-                        Ingat saya
-                      </Label>
-                    </div>
-                    <Link href="#" className="text-sm text-green-600 hover:underline">
-                      Lupa kata sandi?
-                    </Link>
-                  </div>
-
                   <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={isLoading}>
                     {isLoading ? "Memproses..." : "Masuk"}
                   </Button>
@@ -214,8 +202,6 @@ export default function AuthPage() {
                       </Button>
                     </div>
                   </div>
-
-                  
 
                   <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={isLoading}>
                     {isLoading ? "Memproses..." : "Daftar"}

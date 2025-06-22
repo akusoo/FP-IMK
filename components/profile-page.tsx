@@ -45,7 +45,6 @@ export default function ProfilePage() {
     address: "Jl. Merdeka No. 123, Jakarta Pusat, DKI Jakarta",
     joinDate: "12 Januari 2023",
     avatar: "/placeholder.svg?height=100&width=100",
-    level: "Gold",
     currentPoints: 2450,
     totalWaste: 127.5,
     co2Saved: 45.2,
@@ -95,7 +94,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <AppLayout currentUser={user}>
+    <AppLayout currentUser={user ?? undefined}>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-lg font-semibold md:text-2xl">Profil Pengguna</h1>
@@ -127,12 +126,7 @@ export default function ProfilePage() {
             <div className="flex-1">
               <h2 className="text-2xl font-bold">{userProfile.name}</h2>
               <p className="text-white/80 mb-2">{userProfile.email}</p>
-              <div className="flex items-center gap-4">
-                <Badge variant="secondary" className="bg-white/20 text-white">
-                  Level {userProfile.level}
-                </Badge>
-                <span className="text-sm">Bergabung sejak {userProfile.joinDate}</span>
-              </div>
+              <span className="text-sm">Bergabung sejak {userProfile.joinDate}</span>
             </div>
             <div className="text-right">
               <div className="text-3xl font-bold">{userProfile.currentPoints.toLocaleString()}</div>
@@ -143,8 +137,8 @@ export default function ProfilePage() {
       </Card>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3 mb-8">
-        <Card>
+      <div className="flex gap-4 mb-8 flex-col md:flex-row">
+        <Card className="flex-1">
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
               <div className="rounded-full bg-green-100 p-2">
@@ -157,7 +151,7 @@ export default function ProfilePage() {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="flex-1">
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
               <div className="rounded-full bg-blue-100 p-2">
@@ -170,27 +164,12 @@ export default function ProfilePage() {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <div className="rounded-full bg-yellow-100 p-2">
-                <Trophy className="h-5 w-5 text-yellow-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Pencapaian Diraih</p>
-                <p className="text-xl font-bold">{achievements.filter((a) => a.earned).length}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="profile">Profil</TabsTrigger>
           <TabsTrigger value="security">Keamanan</TabsTrigger>
-          <TabsTrigger value="notifications">Notifikasi</TabsTrigger>
-          <TabsTrigger value="achievements">Pencapaian</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile" className="mt-4">
@@ -323,25 +302,6 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 <Separator />
-                <div className="space-y-4">
-                  <h4 className="font-medium">Pengaturan Keamanan Tambahan</h4>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Autentikasi Dua Faktor</p>
-                      <p className="text-sm text-muted-foreground">Tambahkan lapisan keamanan ekstra untuk akun Anda</p>
-                    </div>
-                    <Switch />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Notifikasi Login</p>
-                      <p className="text-sm text-muted-foreground">
-                        Dapatkan notifikasi saat ada login dari perangkat baru
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                </div>
                 <div className="flex justify-end">
                   <Button className="bg-green-600 hover:bg-green-700" onClick={handleChangePassword}>
                     <Shield className="mr-2 h-4 w-4" />
@@ -349,129 +309,6 @@ export default function ProfilePage() {
                   </Button>
                 </div>
               </form>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="notifications" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Pengaturan Notifikasi</CardTitle>
-              <CardDescription>Atur preferensi notifikasi yang ingin Anda terima</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="font-medium mb-4">Notifikasi Email</h4>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Konfirmasi Transaksi</p>
-                        <p className="text-sm text-muted-foreground">
-                          Email konfirmasi setiap kali Anda melakukan transaksi
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Update Poin</p>
-                        <p className="text-sm text-muted-foreground">
-                          Notifikasi saat poin Anda bertambah atau berkurang
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Promosi & Penawaran</p>
-                        <p className="text-sm text-muted-foreground">
-                          Informasi tentang hadiah baru dan penawaran khusus
-                        </p>
-                      </div>
-                      <Switch />
-                    </div>
-                  </div>
-                </div>
-                <Separator />
-                <div>
-                  <h4 className="font-medium mb-4">Notifikasi Push</h4>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Status Penjemputan</p>
-                        <p className="text-sm text-muted-foreground">
-                          Update real-time tentang status penjemputan sampah
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Reminder Jadwal</p>
-                        <p className="text-sm text-muted-foreground">Pengingat jadwal penjemputan sampah</p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Pencapaian Baru</p>
-                        <p className="text-sm text-muted-foreground">Notifikasi saat Anda meraih pencapaian baru</p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="achievements" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Pencapaian & Badge</CardTitle>
-              <CardDescription>Lihat pencapaian yang telah Anda raih dan yang sedang dalam progress</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-2">
-                {achievements.map((achievement) => (
-                  <Card
-                    key={achievement.id}
-                    className={`relative ${achievement.earned ? "bg-green-50 border-green-200" : ""}`}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-4">
-                        <div className={`rounded-full p-3 ${achievement.earned ? "bg-green-100" : "bg-muted"}`}>
-                          <achievement.icon
-                            className={`h-6 w-6 ${achievement.earned ? "text-green-600" : "text-muted-foreground"}`}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-semibold">{achievement.name}</h4>
-                            {achievement.earned && (
-                              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Selesai</Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-muted-foreground mb-3">{achievement.description}</p>
-                          {achievement.earned ? (
-                            <p className="text-xs text-green-600">Diraih pada {achievement.date}</p>
-                          ) : (
-                            <div>
-                              <div className="flex items-center justify-between mb-1">
-                                <span className="text-xs text-muted-foreground">Progress</span>
-                                <span className="text-xs text-muted-foreground">{achievement.progress}%</span>
-                              </div>
-                              <Progress value={achievement.progress} className="h-2" />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
             </CardContent>
           </Card>
         </TabsContent>

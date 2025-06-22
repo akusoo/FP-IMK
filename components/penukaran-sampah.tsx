@@ -71,7 +71,7 @@ export default function PenukaranSampah() {
 
   return (
     <AdminGuard>
-      <AppLayout currentUser={user}>
+      <AppLayout currentUser={user ?? undefined}>
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-lg font-semibold md:text-2xl">Pencatatan Sampah</h1>
@@ -108,7 +108,6 @@ export default function PenukaranSampah() {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="font-semibold">{memberInfo.name}</span>
-                        <Badge variant="secondary">{memberInfo.level}</Badge>
                       </div>
                       <p className="text-sm text-muted-foreground">{memberInfo.phone}</p>
                       <p className="text-sm">

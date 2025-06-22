@@ -53,8 +53,8 @@ export default function Dashboard() {
   ]
 
   return (
-    <AppLayout currentUser={user}>
-      <div className="mb-8">
+        <AppLayout currentUser={user ?? undefined}>
+        <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-8">Dashboard</h1>
 
         {/* Stats Cards */}
@@ -111,9 +111,11 @@ export default function Dashboard() {
                 <h2 className="text-xl font-bold text-gray-900">Rewards</h2>
                 <p className="text-sm text-gray-600">Tukarkan poin anda dengan voucher voucher yang menggiurkan</p>
               </div>
-              <Button className="bg-green-500 hover:bg-green-600 text-white">
-                Lihat Semua
-                <ArrowUpRight className="w-4 h-4 ml-1" />
+              <Button asChild className="bg-green-500 hover:bg-green-600 text-white">
+                <a href="/rewards">
+                  Lihat Semua
+                  <ArrowUpRight className="w-4 h-4 ml-1" />
+                </a>
               </Button>
             </div>
 
@@ -143,9 +145,11 @@ export default function Dashboard() {
               <h2 className="text-xl font-bold text-gray-900">Aktivitas Terbaru</h2>
               <p className="text-sm text-gray-600">Daftar pencatatan sampah dan penjemputan terakhir anda</p>
             </div>
-            <Button className="bg-green-500 hover:bg-green-600 text-white">
-              Lihat Semua
-              <ArrowUpRight className="w-4 h-4 ml-1" />
+            <Button asChild className="bg-green-500 hover:bg-green-600 text-white">
+              <a href="/riwayat">
+                Lihat Semua
+                <ArrowUpRight className="w-4 h-4 ml-1" />
+              </a>
             </Button>
           </div>
 
