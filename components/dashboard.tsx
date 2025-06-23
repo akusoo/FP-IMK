@@ -6,8 +6,37 @@ import { Button } from "@/components/ui/button"
 import { Recycle, Star, ArrowUpRight } from "lucide-react"
 import AppLayout from "./app-layout"
 import { useUser } from "@/hooks/use-user"
+import { useState, useEffect } from "react"
+import  supabase  from "@/app/config/supabase-client"
+
+type User = {
+  id: string
+  name: string
+  poin: number
+}
 
 export default function Dashboard() {
+
+  const [fetchError, setFetchError] = useState()
+  const [users, setUsers] = useState<User[]>([])
+
+  const [todos, setTodos] = useState<User[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase
+      .from('user')
+      .select('*')
+      if (error) console.error(error)
+      else setUsers(data as User[])
+    }
+  
+    fetchData()
+  }, [])
+  
+
+  const [currentPoints, setCurrentPoints] = useState(1250)
+
   const { user } = useUser()
 
   const recentActivities = [
