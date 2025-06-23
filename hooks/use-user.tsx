@@ -21,7 +21,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // Simulasi user - dalam implementasi nyata, ini akan dari API/auth
   const user: User = {
     name: "Budi Santoso",
-    role: "user", // Ubah ke "admin" untuk testing admin features
+    role: "admin", // Ubah ke "admin" untuk testing admin features
     email: "budi@example.com",
     phone: "08123456789",
   }

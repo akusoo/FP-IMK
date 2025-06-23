@@ -37,6 +37,8 @@ export default function ProfilePage() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   const userProfile = {
     name: "Budi Santoso",
@@ -93,6 +95,26 @@ export default function ProfilePage() {
     alert("Password berhasil diubah!")
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+      setPreviewUrl(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+    const formData = new FormData();
+    formData.append('avatar', selectedFile);
+    await fetch('/api/upload-profile', {
+      method: 'POST',
+      body: formData,
+    });
+    // TODO: refresh user data or show notification
+    setSelectedFile(null);
+    setPreviewUrl(null);
+  };
+
   return (
     <AppLayout currentUser={user ?? undefined}>
       <div className="flex items-center justify-between mb-8">
@@ -108,7 +130,7 @@ export default function ProfilePage() {
           <div className="flex items-center gap-6">
             <div className="relative">
               <Avatar className="h-20 w-20 border-4 border-white/20">
-                <AvatarImage src={userProfile.avatar || "/placeholder.svg"} alt={userProfile.name} />
+                <AvatarImage src={previewUrl || userProfile.avatar || "/placeholder.svg"} alt={userProfile.name} />
                 <AvatarFallback className="bg-white/20 text-white text-xl">
                   {userProfile.name
                     .split(" ")
@@ -116,12 +138,28 @@ export default function ProfilePage() {
                     .join("")}
                 </AvatarFallback>
               </Avatar>
-              <Button
-                size="icon"
-                className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-white text-green-600 hover:bg-white/90"
-              >
-                <Camera className="h-4 w-4" />
-              </Button>
+              <label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+                <Button
+                  asChild
+                  size="icon"
+                  className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-white text-green-600 hover:bg-white/90"
+                >
+                  <span>
+                    <Camera className="h-4 w-4" />
+                  </span>
+                </Button>
+              </label>
+              {selectedFile && (
+                <Button onClick={handleUpload} className="absolute left-1/2 -bottom-12 -translate-x-1/2 bg-green-600 hover:bg-green-700 text-white text-xs px-4 py-1 h-7">
+                  Upload Foto Profil
+                </Button>
+              )}
             </div>
             <div className="flex-1">
               <h2 className="text-2xl font-bold">{userProfile.name}</h2>

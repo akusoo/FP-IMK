@@ -203,16 +203,6 @@ export default function PenukaranSampah() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Notes */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Catatan Tambahan</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Textarea placeholder="Tambahkan catatan untuk transaksi ini (opsional)" className="min-h-[100px]" />
-          </CardContent>
-        </Card>
       </AppLayout>
     </AdminGuard>
   )

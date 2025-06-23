@@ -21,7 +21,7 @@ export default function RiwayatPage() {
       id: "RCY-001",
       tanggal: "05 Juni 2025",
       jenis: "penyetoran",
-      kategori: "Botol",
+      kategori: "Plastik",
       detail: "Botol Plastik",
       berat: "3.5 Kg",
       poin: "+50",
@@ -31,7 +31,7 @@ export default function RiwayatPage() {
       id: "RCY-002",
       tanggal: "05 Juni 2025",
       jenis: "Penukaran",
-      kategori: "-",
+      kategori: "Kertas",
       detail: "Voucher",
       berat: "-",
       poin: "-50",
@@ -41,7 +41,7 @@ export default function RiwayatPage() {
       id: "RCY-003",
       tanggal: "05 Juni 2025",
       jenis: "Penjemputan",
-      kategori: "Botol",
+      kategori: "Logam",
       detail: "Botol Plastik",
       berat: "3.5 Kg",
       poin: "+50",
@@ -51,7 +51,7 @@ export default function RiwayatPage() {
       id: "RCY-004",
       tanggal: "05 Juni 2025",
       jenis: "Penjemputan",
-      kategori: "Botol",
+      kategori: "Kaca",
       detail: "Botol Plastik",
       berat: "3.5 Kg",
       poin: "+50",
@@ -61,7 +61,7 @@ export default function RiwayatPage() {
       id: "RCY-005",
       tanggal: "05 Juni 2025",
       jenis: "Penjemputan",
-      kategori: "Botol",
+      kategori: "Plastik",
       detail: "Botol Plastik",
       berat: "3.5 Kg",
       poin: "+50",
@@ -71,7 +71,7 @@ export default function RiwayatPage() {
       id: "RCY-006",
       tanggal: "05 Juni 2025",
       jenis: "penyetoran",
-      kategori: "Botol",
+      kategori: "Kertas",
       detail: "Botol Plastik",
       berat: "3.5 Kg",
       poin: "+50",
@@ -85,7 +85,7 @@ export default function RiwayatPage() {
   })
 
   return (
-    <AppLayout currentUser={user}>
+    <AppLayout currentUser={user ?? undefined}>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Riwayat Transaksi</h1>
         <p className="text-gray-600 mb-8">Lihat dan kelola semua transaksi penyetoran sampah dan penukaran poin anda</p>
@@ -137,10 +137,6 @@ export default function RiwayatPage() {
                         <th className="text-left py-3 px-6 text-sm font-bold text-gray-600 ">Tanggal</th>
                         <th className="text-left py-3 px-6 text-sm font-bold text-gray-600">Jenis</th>
                         <th className="text-left py-3 px-6 text-sm font-bold text-gray-600">Kategori</th>
-                        <th className="text-left py-3 px-6 text-sm font-bold text-gray-600">Detail</th>
-                        <th className="text-left py-3 px-6 text-sm font-bold text-gray-600">Berat</th>
-                        <th className="text-left py-3 px-6 text-sm font-bold text-gray-600">Poin</th>
-                        <th className="text-left py-3 px-6 text-sm font-bold text-gray-600">Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -150,8 +146,6 @@ export default function RiwayatPage() {
                           <td className="py-4 px-6 text-sm text-gray-600">{transaction.tanggal}</td>
                           <td className="py-4 px-6 text-sm text-gray-600">{transaction.jenis}</td>
                           <td className="py-4 px-6 text-sm text-gray-600">{transaction.kategori}</td>
-                          <td className="py-4 px-6 text-sm text-gray-600">{transaction.detail}</td>
-                          <td className="py-4 px-6 text-sm text-gray-600">{transaction.berat}</td>
                           <td className="py-4 px-6">
                             <Badge
                               className={`${
@@ -163,7 +157,6 @@ export default function RiwayatPage() {
                               {transaction.poin}
                             </Badge>
                           </td>
-                          <td className="py-4 px-6 text-sm text-gray-600">{transaction.status}</td>
                         </tr>
                       ))}
                     </tbody>
