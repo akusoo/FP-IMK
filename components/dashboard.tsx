@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import supabase from "@/app/config/supabase-client"
 import Link from "next/link"
 import {
   CalendarPlus,
@@ -35,7 +36,32 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Progress } from "@/components/ui/progress"
 
+type User = {
+  id: string
+  name: string
+  poin: number
+}
+
 export default function Dashboard() {
+
+  const [fetchError, setFetchError] = useState()
+  const [users, setUsers] = useState<User[]>([])
+
+  const [todos, setTodos] = useState<User[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase
+      .from('user')
+      .select('*')
+      if (error) console.error(error)
+      else setUsers(data as User[])
+    }
+  
+    fetchData()
+  }, [])
+  
+
   const [currentPoints, setCurrentPoints] = useState(1250)
 
   const navigationItems = [
@@ -292,7 +318,9 @@ export default function Dashboard() {
                 <Award className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">{currentPoints.toLocaleString()}</div>
+                <div className="text-2xl font-bold text-green-600">
+                  {users.map((user) => (<li key={user.id}>{user.poin.toString()}</li>))}
+                </div>
                 <p className="text-xs text-muted-foreground">+180 dari bulan lalu</p>
               </CardContent>
             </Card>
