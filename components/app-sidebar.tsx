@@ -34,7 +34,7 @@ export default function AppSidebar({ currentUser = { name: "Budi Santoso", role:
   const navigationItems = getNavigationItems()
 
   return (
-    <aside className="w-64 bg-white border-r-2 border-gray-250 min-h-screen">
+    <aside className="w-64 bg-white border-r-2 border-gray-300 min-h-screen">
       <nav className="p-6">
         <div className="space-y-2">
           {navigationItems.map((item) => {

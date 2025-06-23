@@ -22,7 +22,7 @@ interface AppHeaderProps {
 
 export default function AppHeader({ currentUser = { name: "Budi Santoso", role: "user" } }: AppHeaderProps) {
   return (
-    <header className="bg-white border-b-2 border-gray-250 px-6 py-4">
+    <header className="bg-white border-b-2 border-gray-290 px-6 py-4">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
