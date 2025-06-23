@@ -162,7 +162,7 @@ export default function RewardsPage() {
     : rewards.filter((reward) => reward.category === selectedCategory)
 
   return (
-    <AppLayout currentUser={user}>
+    <AppLayout currentUser={user ?? undefined}>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-lg font-semibold md:text-2xl">Poin & Hadiah</h1>
@@ -278,9 +278,6 @@ export default function RewardsPage() {
                     </div>
                     <div className="text-right">
                       <p className="font-medium text-red-600">{item.points} Poin</p>
-                      <Badge variant={item.status === "Berhasil" ? "default" : "secondary"} className="text-xs">
-                        {item.status}
-                      </Badge>
                     </div>
                   </div>
                 ))}
@@ -323,7 +320,7 @@ export default function RewardsPage() {
                         <p className="text-xs text-muted-foreground">Kadaluarsa: {voucher.expired}</p>
                       </div>
                       <Badge variant={voucher.status === 'Aktif' ? 'default' : 'secondary'} className="text-xs">
-                        {voucher.status}
+                        {voucher.status === 'Aktif' ? voucher.status : null}
                       </Badge>
                     </div>
                   ))

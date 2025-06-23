@@ -17,6 +17,9 @@ export default function JemputSampah() {
   const [selectedDate, setSelectedDate] = useState("")
   const [selectedTime, setSelectedTime] = useState("")
 
+  const [weight, setWeight] = useState(0)
+  const [category, setCategory] = useState("")
+
   const timeSlots = ["08:00 - 10:00", "10:00 - 12:00", "13:00 - 15:00", "15:00 - 17:00"]
 
   const upcomingPickups = [
@@ -49,7 +52,7 @@ export default function JemputSampah() {
   }
 
   return (
-    <AppLayout currentUser={user}>
+    <AppLayout currentUser={user ?? undefined}>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-lg font-semibold md:text-2xl">Jadwal Penjemputan</h1>
@@ -104,23 +107,45 @@ export default function JemputSampah() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="estimated-weight">Perkiraan Berat (kg)</Label>
-              <Select>
+              <Label htmlFor="category">Kategori Sampah</Label>
+              <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Pilih perkiraan berat" />
+                  <SelectValue placeholder="Pilih kategori" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1-3">1-3 kg</SelectItem>
-                  <SelectItem value="3-5">3-5 kg</SelectItem>
-                  <SelectItem value="5-10">5-10 kg</SelectItem>
-                  <SelectItem value="10+">Lebih dari 10 kg</SelectItem>
+                  <SelectItem value="Plastik">Plastik</SelectItem>
+                  <SelectItem value="Kertas">Kertas</SelectItem>
+                  <SelectItem value="Logam">Logam</SelectItem>
+                  <SelectItem value="Kaca">Kaca</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="notes">Catatan Tambahan</Label>
-              <Textarea id="notes" placeholder="Catatan khusus untuk petugas (opsional)" />
+              <Label htmlFor="weight">Berat (kg)</Label>
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => setWeight(Math.max(0, Math.round((weight - 0.1) * 10) / 10))}
+                  disabled={weight === 0}
+                >
+                  –
+                </Button>
+                <div className="w-20 text-center">
+                  <span className="font-mono text-lg">{weight.toFixed(1)}</span>
+                  <p className="text-xs text-muted-foreground">kg</p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => setWeight(Math.round((weight + 0.1) * 10) / 10)}
+                >
+                  +
+                </Button>
+              </div>
             </div>
 
             <Button className="w-full bg-green-600 hover:bg-green-700" onClick={handleSchedulePickup}>
