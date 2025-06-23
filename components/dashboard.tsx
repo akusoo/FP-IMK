@@ -109,7 +109,9 @@ export default function Dashboard() {
                 </div>
                 <span className="text-gray-600 font-medium">Poin Terkumpul</span>
               </div>
-              <div className="text-3xl font-bold text-gray-900 mb-1">1,850 Poin</div>
+              <div className="text-3xl font-bold text-gray-900 mb-1">
+               {users.map(user => user.poin)}
+              </div>
               <div className="text-sm text-gray-500">+120 poin minggu ini</div>
             </CardContent>
           </Card>
